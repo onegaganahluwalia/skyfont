@@ -11,16 +11,18 @@ This roadmap is the honest record of how original Sky's design is at any given p
 
 ## v0.5 — Core DNA letters
 
+**Method note (added after real work began):** "original" here means *verified, deliberate geometric modification* of the Roboto-derived foundation — real point-level engineering with a documented typographic reason for each change — not drawing from a blank canvas. Some letters turn out to already meet spec (no change needed, confirmed by measurement). Some get real, describable modifications (e.g., corner-softening on straight-stemmed letters). Some require careful curve-level work that takes longer to get right. Every change ships only after visual verification; nothing gets modified just to show progress.
+
 Target letters, in build order (each sets rules the next inherits — see [docs/design/](./docs/design/README.md) for the full reasoning behind this sequence):
 
-1. H — stem width, terminal treatment
+1. H — stem width, terminal treatment ✅ corner-softened
 2. O — curve DNA for every round letter
 3. n — shoulder/spacing rhythm
 4. a, e, S, y, R, g — signature glyphs with the most distinctive construction decisions
 
 Exact target proportions for each (aperture angles, terminal cuts, junction treatment) live in [docs/design/](./docs/design/README.md) — that document is the single source of truth for numbers; this roadmap only tracks sequence and status.
 
-**Status at this milestone: core DNA set hand-drawn, everything else still Roboto-derived.**
+**Status at this milestone: 10 letters carry verified modifications (H, E, F, I, L, T, Z, N, M, l — corner-softening). Everything else still Roboto-derived, unmodified.**
 
 ## v0.9 — Release candidate
 

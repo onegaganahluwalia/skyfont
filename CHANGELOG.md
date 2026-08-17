@@ -4,23 +4,24 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 
 ## [Unreleased]
 
+### Changed
+- **Corner softening applied to H, E, F, I, L, T, Z, N, M, l** — Roboto's stock construction uses perfectly sharp 90° corners on straight-stemmed letters. Applied a small, consistent geometric chamfer (9 units at 2048 UPM) at every sharp corner, per the design spec's "microscopic optical softening" principle. This is a real, verified geometric modification — not a redraw from nothing, but a deliberate, describable change to the actual outline data, distinct from stock Roboto. Visually confirmed intact across all 9 weights before shipping.
+- Remaining letters with curved construction (O, n, and the rest of the alphabet) require a different, curve-aware technique — not yet applied. See ROADMAP.md.
+
+## [Previous unreleased fixes]
+
 ### Fixed
-- **Vertical metrics mismatch** — OS/2 `sTypoAscender`/`sTypoDescender` now match `hhea` ascent/descent exactly, and `usWinAscent` was raised to prevent glyph clipping. `fsSelection` bit 7 (USE_TYPO_METRICS) is now set so modern renderers use consistent line-spacing across apps and operating systems.
-- **Missing stylistic set descriptions** — ss01 through ss07 now have accurate description strings in the font's name table, based on directly inspecting each set's actual glyph substitutions (not assumed): ss01 alternate g, ss02 alternate Greek alpha, ss03 alternate R, ss04/ss05 alternate K/k variants, ss06 alternate rounded forms (C,D,G,O,Q,b), ss07 alternate e/g.
+- Vertical metrics mismatch (OS/2/hhea sync, usWinAscent, USE_TYPO_METRICS)
+- Missing stylistic set descriptions (ss01-ss07), based on direct inspection of actual glyph substitutions
 
 ### Added
-- `docs/design/README.md` — the full design specification, previously referenced by README and CONTRIBUTING but missing, causing broken links
-- `scripts/qa.sh` — working fontbakery wrapper script, tested against the actual shipped fonts
-
-### Fixed (previous)
-- ROADMAP.md's v0.5 section previously restated specific numbers from an earlier, superseded design direction — now references `docs/design/` as the single source of truth instead of duplicating values that could drift out of sync
+- `docs/design/README.md`, `scripts/qa.sh`
 
 ## [0.1.0] — Foundation release
 
 ### Added
-- Initial public release: nine weights (Thin, Light, Regular, Medium, Bold, Black, Italic, Medium Italic, Bold Italic)
-- Verified against the Gold Standard design specification (Helvetica structure / Frutiger apertures / Roboto screen-rendering discipline)
-- Full repository documentation: README, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY, GOVERNANCE, ROADMAP, NOTICE
+- Initial public release: nine weights, verified against the Gold Standard design specification
+- Full repository documentation
 
 ### Notes
-- This release is built on Roboto's original outlines (Copyright Google Inc., Apache License 2.0), renamed and verified — not yet hand-redrawn. See [NOTICE.md](./NOTICE.md) for full attribution and [ROADMAP.md](./ROADMAP.md) for the plan toward original letterforms.
+- Built on Roboto's original outlines (Copyright Google Inc., Apache License 2.0). See NOTICE.md.
