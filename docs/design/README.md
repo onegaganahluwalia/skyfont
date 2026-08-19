@@ -18,6 +18,8 @@ Synthesize the three most successful sans-serifs of the last century: **Helvetic
 
 **Stem-to-counter ratio:** Regular weight stems at 9.5–10% of cap-height as an initial target. *(Verified: Roboto's actual stems measure ~13.3% of cap-height — heavier than this original estimate. Decision: keep Roboto's proven, real-world-tested weight rather than thin it based on a desk estimate. This spec value is retained here for historical reasoning; treat 13.3% as the current working target until a deliberate decision changes it.)*
 
+**Overall width — deliberate design choice, not a compliance fix:** Sky ships ~3.2% narrower than its Roboto foundation, measured on a full sentence at real text size. This comes entirely from proportionally tighter side-bearings (12% reduction, scaled to each glyph's own natural spacing) applied uniformly across the whole family — never from compressing letterforms, which would distort curves and risk clogging counters. Verified with zero letter-collision risk across tight combinations (e.g. "illwork mrnvvw") before shipping. This is a stated preference for a quieter, more restrained reading rhythm, not a correction of an error — Roboto's original spacing was already correct for its own purposes.
+
 **Aperture openness (c, e, s):** the highest-leverage decision for small-size legibility.
 
 | Letter | Target | Verified (v0.1) |
