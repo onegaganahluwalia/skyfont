@@ -5,13 +5,13 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 ## [Unreleased]
 
 ### Changed
-- **Corner-softening extended to A, K, V, W, X, Y, k, v, w, x, z, and digits 1/4/7** — same verified technique as the first batch (H, E, F, I, L, T, Z, N, M, l), applied after confirming each is pure straight-line construction (safe for this exact method). 24 letters + 3 digits now carry this real, describable modification.
-- Confirmed unsafe for this technique and left untouched: y, U, J (all mix curves with straight lines — corner-softening would risk distorting the curve).
+- **Default line-height increased from 1.32x to 1.45x** — a deliberate, evidence-backed choice for sustained reading comfort, not an arbitrary preference. This is baked directly into the font's ascent/descent metrics rather than using the lineGap field, specifically because lineGap is handled inconsistently across platforms (desktop apps, browsers, and Windows all treat it differently) — baking it into ascent/descent instead means every application respects it identically. Caught this cross-platform inconsistency risk via fontbakery before shipping the simpler (wrong) version.
 
 ### Previous unreleased work
-- ~3.2% narrower spacing (deliberate design choice, not a fix)
-- Vertical metrics fix, stylistic set descriptions
-- `docs/design/README.md`, `scripts/qa.sh`, live website
+- Fixed asymmetric overshoot on lowercase o/c/e/s (real typographic bug, not a preference)
+- Corner-softening on 24 letters + 3 digits
+- ~3.2% narrower spacing (deliberate design choice)
+- Vertical metrics sync, stylistic set descriptions, docs/design spec, QA tooling, live website
 
 ## [0.1.0] — Foundation release
 
