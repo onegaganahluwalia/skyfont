@@ -247,7 +247,7 @@ footer a:hover { color: var(--accent); }
   <section id="origin">
     <h2>Where Sky actually comes from</h2>
     <div class="origin">
-      <p><strong>v0.1 is a verified foundation, not yet an original typeface.</strong> It's built on Roboto's real, professionally-drawn outlines (Copyright Google Inc., Apache License 2.0), renamed and checked glyph-by-glyph against Sky's own design specification. That verification found Roboto's actual construction already meets or exceeds most of Sky's targets — a real, useful starting point, not a shortcut we're hiding.</p>
+      <p><strong>v0.2 is a verified foundation, not yet an original typeface.</strong> It's built on Roboto's real, professionally-drawn outlines (Copyright Google Inc., Apache License 2.0), renamed and checked glyph-by-glyph against Sky's own design specification. That verification found Roboto's actual construction already meets or exceeds most of Sky's targets — a real, useful starting point, not a shortcut we're hiding.</p>
       <p>Some letters now carry genuine, verified modifications from that foundation — corner-softening on the straight-stemmed capitals, for a start. The plan from here is to make Sky fully original, one glyph at a time, with every change documented and nothing shipped unverified. See the <a href="https://github.com/onegaganahluwalia/skyfont/blob/main/ROADMAP.md">roadmap</a> for exactly where things stand.</p>
     </div>
   </section>
@@ -256,9 +256,12 @@ footer a:hover { color: var(--accent); }
     <h2>Recent work</h2>
     <div class="origin" style="padding: 24px 32px;">
       <ul style="margin:0; padding-left:20px; font-size:14px; line-height:1.9; color:var(--fg-soft);">
-        <li><strong style="color:var(--fg);">Default line-height increased to 1.45x</strong> — baked into ascent/descent metrics (not lineGap, which renders inconsistently across platforms) for sustained reading comfort.</li>
-        <li><strong style="color:var(--fg);">Fixed asymmetric overshoot</strong> on lowercase o/c/e/s — these sat flush at x-height with zero top overshoot while correctly overshooting the baseline, making them read as optically smaller than flat letters. Now symmetric, matching the capitals.</li>
-        <li><strong style="color:var(--fg);">~3.2% narrower spacing</strong> — a deliberate design choice toward a quieter reading rhythm, via proportional side-bearing tightening (never by compressing letterforms).</li>
+        <li><strong style="color:var(--fg);">x-height reduced to 68% of cap height</strong> — Sky's locked defining proportion, lower than Roboto (74%) and Helvetica (71%), giving text a quieter classical presence. Verified in outlines and OS/2 metadata across all 9 fonts.</li>
+        <li><strong style="color:var(--fg);">5,901 negative side-bearing fixes</strong> — full extended glyph set audited. Italic variants had ~1,100–1,200 broken glyphs from spacing scripts intersecting italic geometry. Zero known bearing problems remain.</li>
+        <li><strong style="color:var(--fg);">Individual spacing repairs</strong> — r, f, k rsb fixed (near-zero/negative → 80–110u); K BoldItalic fixed from −159u to 90u; j lsb fixed from −66u to 60u.</li>
+        <li><strong style="color:var(--fg);">t crossbar repositioned</strong> to correct height after x-height scaling.</li>
+        <li><strong style="color:var(--fg);">Default line-height 1.45×</strong> — baked into ascent/descent (not lineGap). OS/2 typo ↔ hhea synced, USE_TYPO_METRICS bit set across all weights.</li>
+        <li><strong style="color:var(--fg);">~3.2% narrower spacing</strong> — deliberate design choice toward a quieter reading rhythm, via proportional side-bearing reduction. No letterforms compressed.</li>
         <li><strong style="color:var(--fg);">Corner-softening</strong> on 24 letters + 3 digits, verified individually before shipping.</li>
       </ul>
       <p style="margin: 16px 0 0; font-size: 13px;">Full history: <a href="https://github.com/onegaganahluwalia/skyfont/blob/main/CHANGELOG.md">CHANGELOG.md</a></p>

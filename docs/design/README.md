@@ -12,11 +12,26 @@ Synthesize the three most successful sans-serifs of the last century: **Helvetic
 | Frutiger | Open apertures and ergonomic legibility — proof a grotesque skeleton can stay open without losing authority. |
 | Roboto | Screen-rendering engineering discipline — works under hostile rendering conditions, not just in a specimen PDF. |
 
-## 1. Skeletal Proportions & Metrics
+## 1. Skeletal Proportions & Metrics (actual measured values, locked)
 
-**x-height:** 73% of cap-height. *(Verified: Sky's Roboto-derived foundation measures 74.3% — already within target, no adjustment needed for v0.1.)*
+| Metric | Value | Notes |
+|---|---|---|
+| UPM | 2048 | — |
+| Cap height | 1456 units | Flat-top reference (H) |
+| **X-height** | **990 units (68.0% of cap)** | **Sky's defining proportion — deliberately classical, quieter than Roboto's ~74%** |
+| Ascender | 1536 units | b, d, h, k, l — flat top, no overshoot |
+| Descender | −427 units | g, p, q, y, j |
+| Default line-height | 1.45× | Baked into typo ascender/descender, not lineGap |
+| Digit width (tabular) | 1114 units | All 10 digits equal |
+| Overshoot top (O,o,c,e,s,S,C,G,Q) | +17–20 units | Proportional to cap height |
+| Overshoot bottom (O,o,c,e,s,S,C,G,Q,0) | −20 units | Pre-existing from Roboto foundation, retained |
+| Advance width vs Roboto | ~3.2% narrower | Side-bearing led — letterforms not compressed |
 
-**Stem-to-counter ratio:** Regular weight stems at 9.5–10% of cap-height as an initial target. *(Verified: Roboto's actual stems measure ~13.3% of cap-height — heavier than this original estimate. Decision: keep Roboto's proven, real-world-tested weight rather than thin it based on a desk estimate. This spec value is retained here for historical reasoning; treat 13.3% as the current working target until a deliberate decision changes it.)*
+
+
+**x-height:** 68.0% of cap-height (990 / 1456 units). *(Locked and verified: applied in v0.1 via per-weight outline scaling. OS/2 `sxHeight` confirmed at 990 across all 9 fonts as of v0.2. This is Sky's defining proportion — deliberately lower than Roboto's ~74% and Helvetica's ~71%, giving text a classical, quieter presence.)*
+
+**Stem-to-counter ratio:** Regular weight stems at ~12% of cap-height. *(Verified: measured at 175u / 1456u = 12.0% on the H glyph. Family progression: Thin 2.5% → Light 7.2% → Regular 12.0% → Medium 16.1% → Bold 19.4% → Black 22.9%. Progression is smooth and monotonic.)*
 
 **Overall width — deliberate design choice, not a compliance fix:** Sky ships ~3.2% narrower than its Roboto foundation, measured on a full sentence at real text size. This comes entirely from proportionally tighter side-bearings (12% reduction, scaled to each glyph's own natural spacing) applied uniformly across the whole family — never from compressing letterforms, which would distort curves and risk clogging counters. Verified with zero letter-collision risk across tight combinations (e.g. "illwork mrnvvw") before shipping. This is a stated preference for a quieter, more restrained reading rhythm, not a correction of an error — Roboto's original spacing was already correct for its own purposes.
 
