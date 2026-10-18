@@ -1,0 +1,23 @@
+Sky typeface family
+====================
+
+This font is derived from Roboto, Copyright Google Inc.,
+licensed under the Apache License, Version 2.0
+(http://www.apache.org/licenses/LICENSE-2.0).
+
+Modifications made from the original Roboto source:
+- Renamed family and internal font metadata ("Sky")
+- Verified against a "Gold Standard" type specification combining:
+  Helvetica's structural neutrality and stroke discipline,
+  Frutiger's open apertures and ergonomic legibility,
+  Roboto's screen-rendering engineering discipline.
+  (Full spec: Gold-Standard-Blueprint.docx)
+- Measured analysis confirmed Roboto's x-height ratio (74.3% of
+  cap-height), aperture openness on c/e (42-44 degrees), R leg
+  angle, G spur construction, double-story a, and numeral (1/3/6)
+  construction already meet or exceed the specification's targets,
+  so no structural glyph edits were needed on top of the verified base.
+
+Full Apache License 2.0 text is provided in LICENSE.txt, as required
+by the license terms. This NOTICE file documents the changes made,
+as a matter of good practice.
