@@ -43,6 +43,18 @@ All foundational metric decisions locked and verified. Zero known spacing proble
 - Kerning confirmed active (AV pair and paragraph rendering verified comfortable)
 - **Status: 0% hand-drawn.** Foundation metric engineering complete.
 
+## v0.3 — Horizontal condensing ✅ Complete
+
+All nine fonts condensed 12% horizontally. The family now sits at a proper grotesque proportion.
+
+**Completed:**
+- −12% horizontal width reduction across all 9 fonts — x-coordinates scaled to 88%; y-coordinates untouched (x-height, cap height, ascenders, descenders all preserved)
+- Advance widths and left side bearings scaled proportionally across every glyph
+- H advance moves from ~97% of cap height → ~85% — between Helvetica (~73%) and original Roboto (~97%)
+- Website fonts updated to match
+- Type specimen PDF published (sky-specimen-v03.pdf) — 8 pages, all fonts embedded, available in repo root
+- **Status: 0% hand-drawn.** Proportion and metric engineering complete.
+
 ## v0.5 — Core DNA letters
 
 **Method note (added after real work began):** "original" here means *verified, deliberate geometric modification* of the Roboto-derived foundation — real point-level engineering with a documented typographic reason for each change — not drawing from a blank canvas. Some letters turn out to already meet spec (no change needed, confirmed by measurement). Some get real, describable modifications (e.g., corner-softening on straight-stemmed letters). Some require careful curve-level work that takes longer to get right. Every change ships only after visual verification; nothing gets modified just to show progress.

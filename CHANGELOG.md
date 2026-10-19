@@ -8,6 +8,15 @@ Nothing pending.
 
 ---
 
+## [0.3.0] — Horizontal condensing
+
+### Changed
+- **−12% horizontal width reduction across all 9 fonts** — x-coordinates scaled to 88% uniformly; y-coordinates untouched (x-height, cap height, ascenders, descenders all preserved). Advance widths and left side bearings scaled proportionally. Result: H advance moves from ~97% of cap height to ~85%, landing between Helvetica (~73%) and the original Roboto foundation (~97%). Letters are more compact and refined without feeling compressed.
+- Applied to all weights: Thin, Light, Regular, Medium, Bold, Black, Italic, MediumItalic, BoldItalic.
+- Website fonts updated to match.
+
+---
+
 ## [0.2.0] — x-height milestone
 
 This release marks the completion of Sky's foundational metric work. The 68% x-height is now fully locked in outlines, metadata, and documentation. Zero known bearing problems across the extended glyph set.
