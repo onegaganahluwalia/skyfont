@@ -4,7 +4,12 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 
 ## [Unreleased]
 
-Nothing pending.
+### Website
+- **Fixed: the site was rendering stale, pre-v0.3 fonts.** `website/index.html` embedded six base64 WOFF2 fonts that predated the −12% condensing (e.g. Regular H advance 1421u vs 1250u in v0.3) and still carried the old `sxHeight` of 1082. Italic styles were not embedded at all, so italics were browser-synthesised. The page now loads WOFF2 files generated from the shipped `fonts/*.ttf` (outlines and advance widths verified identical), with TTF fallback.
+- All 9 styles wired via `@font-face` with correct weight/style mapping (100/300/400/500/700/900 upright; 400/500/700 italic), `font-display: swap`, and a preload for Regular. `index.html` drops from 1.1 MB to ~56 KB.
+- Rebuilt the page, still a single static file with no build step and no third-party requests: type tester (editable text, weight, italic, size, line height, tracking, small caps / old-style figures / fractions, presets), weight waterfall for all nine styles, to-scale metrics diagram (cap 1456, x-height 990, ascender 1536, descender −427, 68% ratio, tabular digits), browsable glyph grid with inspector, honest originality status (v0.3 shipped; v0.5 in progress with H, E, F, I, L, T, Z, N, M, l), and download table with TTF + WOFF2 per style and the specimen PDF.
+- Responsive layout (desktop to 390px mobile), system dark mode with a saved toggle, skip link, semantic landmarks, labelled controls, WCAG AA contrast (accent darkened from #5B7A99 to #4A6680 in light mode), `prefers-reduced-motion`. Meta description, canonical URL, Open Graph / Twitter card (`og.png`), and an SVG favicon drawn from Sky Bold's S.
+- Added `scripts/make-webfonts.py` to regenerate `website/fonts/` (TTF copies, WOFF2, LICENSE/NOTICE) from `fonts/` so the site can't drift from the release files again.
 
 ---
 
