@@ -11,15 +11,26 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 - Responsive layout (desktop to 390px mobile), system dark mode with a saved toggle, skip link, semantic landmarks, labelled controls, WCAG AA contrast (accent darkened from #5B7A99 to #4A6680 in light mode), `prefers-reduced-motion`. Meta description, canonical URL, Open Graph / Twitter card (`og.png`), and an SVG favicon drawn from Sky Bold's S.
 - Added `scripts/make-webfonts.py` to regenerate `website/fonts/` (TTF copies, WOFF2, LICENSE/NOTICE) from `fonts/` so the site can't drift from the release files again.
 
-### Fixed — v0.5 letter #2: O / o
+### Changed — v0.5 letter #2: O / o
 - **O and o rebuilt symmetric in all 9 styles.** The v0.2 x-height scaling had leaked into the capital O (bottom stroke 148u vs top 164u in Regular; lower bowl squarer than the upper; upper-left and upper-right handles mismatched), and the overshoot re-correction had moved only the top of o (top 154u vs bottom 139u). Each glyph is now its own-weight Roboto v2.138 outline put through only Sky's documented transforms (x ≈ 0.88 onto the v0.3 bounds; o: y × 0.915 onto −20 / 1007). Regular now measures O 164 / 163u, o 139 / 139u. Advance widths, side bearings, overshoot locks and kerning unchanged.
-- 89 composite glyphs built on O/o (Ö, ó, ọ, ő, о, ο, …) inherit the new shapes; their hmtx left side bearings were re-synced to their outlines.
-- Added `scripts/glyphs/rebuild_O_o.py` (reproducible; needs Roboto v2.138 unhinted).
+- **Spec change, approved by Gagan on 18 Nov 2026: squarer O/o (option B).** Off-curve points move toward each arc's tangent corner. Uprights use t = 0.12 (Regular squareness O 0.10 → 0.21, o 0.06 → 0.18). Each italic gets the t that matches its upright partner's squareness when de-slanted: Italic 0.148 / 0.141, Medium Italic 0.149 / 0.145, Bold Italic 0.148 / 0.147.
+- 89 composite glyphs built on O/o (Ö, ó, ọ, ő, о, ο, …) inherit the new shapes.
+- `scripts/glyphs/rebuild_O_o.py` (with `o_tension.json`) is reproducible; it needs Roboto v2.138 unhinted.
+
+### Fixed — family repair of the v0.2 x-height scaling
+- **Caps, figures and cap-height symbols restored to their foundation proportions in all 9 styles (516–533 glyphs per style, plus ~480 composites each through their components).** v0.2 had multiplied every point between the baseline and y ≈ 1104 by 0.898 in *every* glyph, so capitals kept their tops but lost a tenth of everything below. In Regular, the H bar sat at 605–746 (141u) instead of 673–830 (157u); E/F/A bars and B/P/R bowls were likewise low and thin; C, G, Q, D, U, S, 0, 3, 8 had bottom strokes ~10% lighter than the top. All of these now match Roboto v2.138 + Sky's transforms exactly (mean outline distance 13–20u → 0.2u).
+- Detection is by measurement, glyph by glyph, against the same-weight Roboto. Lowercase, small caps / unicase, old-style figures, numerators / denominators, combining marks and below-cap punctuation keep the intended v0.2 x-height scaling.
+- Corner-softening is re-applied and verified (every orthogonal corner is a 9u chamfer again; v0.3 had 8u below the zone line). The H and the other corner-softened letters keep their modification. Condensing, advance widths, spacing and kerning are byte-identical.
+- Italic stems are no longer kinked at the zone line (9.6° below / 7.5° above → 8.6–8.7° throughout).
+- Added `scripts/glyphs/repair_v02_zone.py` and `scripts/build-v05-repair.py`, which rebuild the v0.5 fonts from the v0.3 release in order.
+
+### Fixed — metrics
+- **Italic angle:** `post.italicAngle` −12° → **−8.66°**, the slant measured on the stems, with the hhea caret 100/21 → 2048/312 to match, in Italic, Medium Italic and Bold Italic. Roboto's true stem slant is 9.86°; the −12% condensing makes it 8.66°. fontbakery `caret_slope` goes from WARN to PASS.
+- **Left side bearings:** hmtx lsb now equals the outline's xMin for every glyph. In v0.3, 1,302–1,436 glyphs per font disagreed by 2–18u (almost all accented composites). Rendering in Chrome / unhinted FreeType is unchanged; this fixes the metadata that hinting and hmtx-based tools use. Added `scripts/fix_metrics.py`.
 
 ### Notes
-- Curve tension is unchanged from the foundation; a squarer alternative was proofed but not applied (decision open, see docs/design §3a).
-- Found during this work, not yet fixed: the same v0.2 leak thinned and lowered cap crossbars and bottom strokes family-wide (e.g. H bar 157u → 141u); c/e/s remain top-heavy; ~1,300 composite glyphs per font have hmtx LSB ≠ outline xMin (mostly by 2–18u); italics are slanted ≈10.6° after condensing (12° × 0.88) while post.italicAngle still says −12°.
-
+- Website font files (`website/fonts/`) regenerated from these fonts with `scripts/make-webfonts.py`.
+- Found, not changed (decisions open): accented composites have advance widths that don't match their base letters (typically 6–36u wider in Regular) (spacing inconsistency from v0.3); c, e, s are still top-heavy (queued); Ø/Œ and C/G/Q/D don't yet carry the O/o tension; period, comma and other x-height-relative punctuation keep the v0.2 scaling.
 
 ---
 
