@@ -24,10 +24,16 @@ WHAT:
 Roboto source: https://github.com/googlefonts/roboto/releases/tag/v2.138
                (roboto-unhinted.zip), Apache License 2.0.
 
-Usage: python3 scripts/glyphs/rebuild_O_o.py /path/to/roboto-unhinted [--tension T]
-       --tension is for proofing alternatives only (0 = Roboto's curve).
+TENSION (v0.5 spec change approved by Gagan, 18 Nov 2026 — option B):
+  O/o are drawn squarer than Roboto (Helvetica-leaning). Uprights use
+  t = 0.12; each italic uses the t that gives its deslanted outer contour
+  the same squareness as its upright partner (scripts/glyphs/o_tension.json).
+
+Usage: python3 scripts/glyphs/rebuild_O_o.py /path/to/roboto-unhinted
+           [--in DIR] [--out DIR] [--tension T] [--tension-json FILE]
 """
 import argparse
+import json
 from pathlib import Path
 
 from fontTools.pens.boundsPen import BoundsPen
@@ -49,10 +55,14 @@ def true_bounds(font, gname):
 
 
 def add_tension(coords, flags, ends, t):
-    """Proofing aid only. For every quarter-arc on-off-off-on, slide both
-    off-curve points along their own tangent toward the arc's corner (the
-    intersection of the two extremum tangents) by fraction t. Tangents at
-    the extrema are unchanged, so curves stay smooth; t > 0 = squarer."""
+    """Squarer curve ("tension"), affine-invariant so it works identically on
+    upright and slanted outlines. For every arc on-off(1..n)-on, find the
+    arc's corner (intersection of the tangents at its two on-curve ends,
+    i.e. the extremum tangents) and slide every off-curve point toward that
+    corner by fraction t. End tangents are unchanged, so curves stay smooth
+    and extrema stay extrema; t > 0 = squarer, t = 0 = Roboto's curve.
+    Handles Roboto's upright quarters (2 off-curves) and italic quarters
+    (2-3 off-curves with implied on-curves)."""
     if t == 0:
         return coords
     pts = [list(p) for p in coords]
@@ -60,20 +70,28 @@ def add_tension(coords, flags, ends, t):
     for end in ends:
         idx = list(range(start, end + 1))
         n = len(idx)
-        for k in range(n):
-            A, P1, P2, B = (idx[(k + j) % n] for j in range(4))
-            if not (flags[A] & 1 and not flags[P1] & 1 and not flags[P2] & 1 and flags[B] & 1):
+        ons = [k for k in range(n) if flags[idx[k]] & 1]
+        for j, k0 in enumerate(ons):
+            k1 = ons[(j + 1) % len(ons)]
+            span = (k1 - k0) % n or n
+            offs = [idx[(k0 + m) % n] for m in range(1, span)]
+            if not offs:
                 continue
-            (ax, ay), (p1x, p1y), (p2x, p2y), (bx, by) = coords[A], coords[P1], coords[P2], coords[B]
-            d1 = (p1x - ax, p1y - ay)
-            d2 = (p2x - bx, p2y - by)
+            A, B = idx[k0], idx[k1]
+            (ax, ay), (bx, by) = coords[A], coords[B]
+            d1 = (coords[offs[0]][0] - ax, coords[offs[0]][1] - ay)
+            d2 = (coords[offs[-1]][0] - bx, coords[offs[-1]][1] - by)
             den = d1[0] * d2[1] - d1[1] * d2[0]
             if abs(den) < 1e-9:
                 continue
             s1 = ((bx - ax) * d2[1] - (by - ay) * d2[0]) / den
+            s2 = ((bx - ax) * d1[1] - (by - ay) * d1[0]) / den
+            if s1 <= 0 or s2 <= 0:      # not a convex corner arc
+                continue
             cx, cy = ax + s1 * d1[0], ay + s1 * d1[1]
-            pts[P1] = [p1x + t * (cx - p1x), p1y + t * (cy - p1y)]
-            pts[P2] = [p2x + t * (cx - p2x), p2y + t * (cy - p2y)]
+            for P in offs:
+                px, py = coords[P]
+                pts[P] = [px + t * (cx - px), py + t * (cy - py)]
         start = end + 1
     return [tuple(p) for p in pts]
 
@@ -135,19 +153,26 @@ def sync_composites(font, changed):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("roboto_dir")
-    ap.add_argument("--tension", type=float, default=0.0)
+    ap.add_argument("--tension", type=float, default=0.0,
+                    help="tension for all styles (overridden by --tension-json)")
+    ap.add_argument("--tension-json",
+                    help='per style/glyph tension, e.g. {"Italic": {"O": 0.13, "o": 0.12}}')
+    ap.add_argument("--in", dest="indir", default=str(ROOT / "fonts"))
     ap.add_argument("--out", default=str(ROOT / "fonts"))
     args = ap.parse_args()
+    tj = json.load(open(args.tension_json)) if args.tension_json else {}
     out = Path(args.out)
     out.mkdir(parents=True, exist_ok=True)
     for s in STYLES:
-        sky = TTFont(ROOT / "fonts" / f"Sky-{s}.ttf")
+        sky = TTFont(Path(args.indir) / f"Sky-{s}.ttf")
         rob = TTFont(Path(args.roboto_dir) / f"Roboto-{s}.ttf")
-        rO = rebuild(sky, rob, "O", O_Y, args.tension)
-        ro = rebuild(sky, rob, "o", o_Y, args.tension)
+        tO = tj.get(s, {}).get("O", args.tension)
+        to = tj.get(s, {}).get("o", args.tension)
+        rO = rebuild(sky, rob, "O", O_Y, tO)
+        ro = rebuild(sky, rob, "o", o_Y, to)
         sync_composites(sky, {"O", "o"})
         sky.save(out / f"Sky-{s}.ttf")
-        print(f"{s:13s} O {rO}  o {ro}")
+        print(f"{s:13s} O {rO} t={tO}  o {ro} t={to}")
 
 
 if __name__ == "__main__":
