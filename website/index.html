@@ -132,12 +132,15 @@ a:hover { text-decoration-thickness: 2px; }
 .theme-toggle { padding: 7px 12px; font-size: 13px; }
 
 /* ---------- Hero ---------- */
-.hero { padding: clamp(48px, 9vw, 112px) 0 clamp(40px, 6vw, 72px); }
+.hero { padding: clamp(36px, 7vw, 96px) 0 clamp(40px, 6vw, 72px); }
 .hero h1 {
   font-size: clamp(88px, 19vw, 248px); font-weight: 300; letter-spacing: -0.045em;
-  line-height: 0.9; margin: 0 0 0 -0.04em;
+  /* Sky's hhea box is 2360/-610 per 2048 em, so at line-height 0.9 the line box ends only
+     ~0.023em below the baseline while the y descender reaches -437/2048 = 0.213em.
+     padding-bottom (in em, so it scales with the clamp) clears the descender at every width. */
+  line-height: 0.9; margin: 0 0 0 -0.04em; padding-bottom: 0.2em;
 }
-.hero .tagline { font-size: clamp(24px, 3.4vw, 40px); font-weight: 400; letter-spacing: -0.015em; line-height: 1.2; margin: 18px 0 0; }
+.hero .tagline { font-size: clamp(24px, 3.4vw, 40px); font-weight: 400; letter-spacing: -0.015em; line-height: 1.2; margin: clamp(4px, 1.2vw, 14px) 0 0; }
 .hero .lede { font-size: clamp(17px, 1.6vw, 20px); color: var(--fg-soft); max-width: 40em; margin: 20px 0 0; }
 .hero-meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 28px 0 0; padding: 0; list-style: none; }
 .pill { font-size: 13px; padding: 6px 12px; border-radius: 999px; border: 1px solid var(--line); color: var(--fg-soft); }
