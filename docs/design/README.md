@@ -62,6 +62,44 @@ Synthesize the three most successful sans-serifs of the last century: **Helvetic
 | **3** | Flat-ish top curve (not fully round), upper bowl slightly smaller than lower | Confirmed close to target |
 | **6** | Open counter, standard junction easing, no spur | Confirmed |
 
+## 3a. O / o — curve DNA (v0.5, letter #2)
+
+**Status: geometry repaired, curve character unchanged from the foundation. Tension is an open decision (see below).** The design spec never defined numeric targets for O (stress, contrast, superellipse), so this section records what was *measured*, what was wrong, and what was changed. The numbers in §1 predate the v0.3 −12% condensing; the values below are measured on the condensed v0.3 files.
+
+**What was wrong (measured on v0.3.0, Regular):** the v0.2 x-height scaling (y-zone 0–1082 → 0–990) leaked into the capital O, and the overshoot re-correction later moved only the *top* of o.
+
+| | O top | O bottom | O lower vs upper squareness | o top | o bottom |
+|---|---|---|---|---|---|
+| Roboto foundation (uncondensed) | 164u | 163u | symmetric | 152u | 152u |
+| Sky v0.3.0 | 164u | **148u** | lower bowl squarer (0.15 vs −0.03…0.11), upper-left ≠ upper-right handles | **154u** | 139u |
+| Sky v0.5 (this change) | 164u | 163u | symmetric (0.10 / 0.10 / 0.10 / 0.11) | 139u | 139u |
+
+A bottom stroke ~10% lighter than the top, and a lower bowl drawn tighter than the upper, are both the opposite of standard optical practice: round letters should sit at least as heavy at the baseline as at the top. All nine styles showed the same pattern (Bold O 248/224, Black 275/248; o top-heavy by 8–17u in every style).
+
+**What changed (O and o only, all 9 styles):** each glyph was rebuilt from its own-weight Roboto v2.138 outline using only the documented family transforms, as one exact affine map per glyph — x scaled ≈ 0.88 so the outline lands on the current v0.3 bounds (advance widths and side bearings unchanged, ±1u on MediumItalic o), y untouched for O (already −20 / 1476), y × 0.915 for o (−20 / 1007, the locked 990 + 17 overshoot). Script: `scripts/glyphs/rebuild_O_o.py`.
+
+**Measured after (stroke thickness in font units; squareness 0 = ellipse, 1 = rectangle, outer contour):**
+
+| Style | O side | O top/bottom | O squareness | o side | o top/bottom | o squareness | O adv ÷ H adv |
+|---|---|---|---|---|---|---|---|
+| Thin | 48 | 54 / 54 | 0.13 | 47 | 49 / 49 | 0.07 | 0.958 |
+| Light | 108 | 108 / 108 | 0.12 | 106 | 93 / 93 | 0.07 | 0.966 |
+| Regular | 168 | 164 / 163 | 0.10 | 164 | 139 / 139 | 0.06 | 0.972 |
+| Medium | 223 | 209 / 208 | 0.09 | 214 | 178 / 178 | 0.07 | 0.978 |
+| Bold | 268 | 248 / 247 | 0.09 | 255 | 213 / 213 | 0.08 | 0.985 |
+| Black | 314 | 275 / 274 | 0.08 | 297 | 238 / 238 | 0.09 | 0.990 |
+| Italic | 164 | 159 / 158 | — | 158 | 136 / 135 | — | 0.955 |
+| Medium Italic | 217 | 203 / 201 | — | 207 | 174 / 173 | — | 0.960 |
+| Bold Italic | 261 | 240 / 239 | — | 247 | 208 / 207 | — | 0.952 |
+
+Vertical stress throughout (thickest at 3 and 9 o'clock in uprights). Overshoot locks verified: O −20 / +1476, o −20 / +1007 (italics −20 / +1006, as before). Outline QA: 2 contours, outer clockwise / inner counter-clockwise, no overlaps, points on extrema in uprights, max rounding kink 0.9° (italics; v0.3 had up to 2.4°). Uprights Thin–Bold now share one 28-point structure for O and o (Black O: 26), which helps the future v2.0 variable font.
+
+**Not yet decided — curve tension.** v0.5 keeps the foundation's squareness (O ≈ 0.10, o ≈ 0.06–0.09 in Regular). A squarer "+0.12 tension" alternative (O ≈ 0.21, o ≈ 0.18) was proofed but **not** applied; choosing it would be a spec decision and should go through a Spec Change Proposal.
+
+**Known side effects / follow-ups:**
+- c, e, s still carry the top-heavy pattern (Regular top 154 / bottom 139); C, G, Q, D, U, S, 0, 3, 8 still carry the thinned bottom strokes; Ø/ø/Œ/œ are separate outlines still on the old O/o. They should inherit this fix when their turn comes.
+- The same v0.2 zone leak lowered and thinned cap crossbars (Regular H bar 673–830 → 605–746, 157u → 141u; E, F, B, P, R, A likewise). This is a family-wide issue, not an O issue.
+
 ## 4. Optical Sizing & Weight Matrix
 
 A single master can't serve both a 12px UI label and a 72pt headline — this table is the reasoning for why sizes need to diverge from the Text baseline, not just a style guide.

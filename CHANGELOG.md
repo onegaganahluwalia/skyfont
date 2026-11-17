@@ -11,6 +11,16 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 - Responsive layout (desktop to 390px mobile), system dark mode with a saved toggle, skip link, semantic landmarks, labelled controls, WCAG AA contrast (accent darkened from #5B7A99 to #4A6680 in light mode), `prefers-reduced-motion`. Meta description, canonical URL, Open Graph / Twitter card (`og.png`), and an SVG favicon drawn from Sky Bold's S.
 - Added `scripts/make-webfonts.py` to regenerate `website/fonts/` (TTF copies, WOFF2, LICENSE/NOTICE) from `fonts/` so the site can't drift from the release files again.
 
+### Fixed — v0.5 letter #2: O / o
+- **O and o rebuilt symmetric in all 9 styles.** The v0.2 x-height scaling had leaked into the capital O (bottom stroke 148u vs top 164u in Regular; lower bowl squarer than the upper; upper-left and upper-right handles mismatched), and the overshoot re-correction had moved only the top of o (top 154u vs bottom 139u). Each glyph is now its own-weight Roboto v2.138 outline put through only Sky's documented transforms (x ≈ 0.88 onto the v0.3 bounds; o: y × 0.915 onto −20 / 1007). Regular now measures O 164 / 163u, o 139 / 139u. Advance widths, side bearings, overshoot locks and kerning unchanged.
+- 89 composite glyphs built on O/o (Ö, ó, ọ, ő, о, ο, …) inherit the new shapes; their hmtx left side bearings were re-synced to their outlines.
+- Added `scripts/glyphs/rebuild_O_o.py` (reproducible; needs Roboto v2.138 unhinted).
+
+### Notes
+- Curve tension is unchanged from the foundation; a squarer alternative was proofed but not applied (decision open, see docs/design §3a).
+- Found during this work, not yet fixed: the same v0.2 leak thinned and lowered cap crossbars and bottom strokes family-wide (e.g. H bar 157u → 141u); c/e/s remain top-heavy; ~1,300 composite glyphs per font have hmtx LSB ≠ outline xMin (mostly by 2–18u); italics are slanted ≈10.6° after condensing (12° × 0.88) while post.italicAngle still says −12°.
+
+
 ---
 
 ## [0.3.0] — Horizontal condensing

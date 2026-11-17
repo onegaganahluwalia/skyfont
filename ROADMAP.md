@@ -62,13 +62,13 @@ All nine fonts condensed 12% horizontally. The family now sits at a proper grote
 Target letters, in build order (each sets rules the next inherits — see [docs/design/](./docs/design/README.md) for the full reasoning behind this sequence):
 
 1. H — stem width, terminal treatment ✅ corner-softened
-2. O — curve DNA for every round letter
+2. O — curve DNA for every round letter ✅ geometry repaired (O and o rebuilt symmetric; tension decision open — see docs/design §3a)
 3. n — shoulder/spacing rhythm
 4. a, e, S, y, R, g — signature glyphs with the most distinctive construction decisions
 
 Exact target proportions for each (aperture angles, terminal cuts, junction treatment) live in [docs/design/](./docs/design/README.md) — that document is the single source of truth for numbers; this roadmap only tracks sequence and status.
 
-**Status at this milestone: 10 letters carry verified modifications (H, E, F, I, L, T, Z, N, M, l — corner-softening). Everything else still Roboto-derived, unmodified.**
+**Status at this milestone: 10 letters carry verified modifications (H, E, F, I, L, T, Z, N, M, l — corner-softening). O and o were rebuilt to repair a v0.2 scaling distortion (symmetric again, foundation curve kept — not yet an original curve). Everything else still Roboto-derived, unmodified.**
 
 ## v0.9 — Release candidate
 
