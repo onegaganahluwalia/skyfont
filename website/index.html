@@ -189,6 +189,8 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
   padding: 12px 22px; border-bottom: 1px solid var(--line); font-size: 14px;
 }
 .tester-sub .label { margin-right: 4px; }
+/* keep each label with its own chips so a wrap never orphans "Presets" from its buttons */
+.chip-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; min-width: 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .chip { font: inherit; font-size: 13.5px; color: var(--fg-soft); background: none; border: 1px solid var(--line); border-radius: 999px; padding: 5px 11px; cursor: pointer; }
 .chip:hover, .chip[aria-pressed="true"] { color: var(--fg); border-color: var(--fg-soft); }
@@ -230,7 +232,7 @@ input[type="range"]::-moz-range-thumb { width: 16px; height: 16px; border-radius
 .stat .big small { font-size: .45em; letter-spacing: 0; color: var(--fg-soft); font-weight: 400; margin-left: 2px; }
 .stat .note { display: block; font-size: 14px; color: var(--fg-soft); margin-top: 6px; }
 .stat.feature { grid-column: span 2; }
-.digits-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 12px; }
+.digits-demo { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 12px; align-items: end; } /* bottom-align so a wrapped caption never shifts one column of figures */
 .digits-demo div { font-size: 22px; line-height: 1.35; text-align: right; }
 .digits-demo .cap { display: block; text-align: left; font-size: 12.5px; color: var(--fg-soft); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 4px; }
 .digits-demo .tn { font-variant-numeric: tabular-nums; }
@@ -327,7 +329,7 @@ footer.site-footer { border-top: 1px solid var(--line); padding: 36px 0 56px; fo
   .header-inner { flex-wrap: wrap; height: auto; padding-top: 10px; gap: 0 12px; }
   .site-nav { order: 3; width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; margin: 0 calc(-1 * var(--gutter)); padding: 0 var(--gutter); width: calc(100% + 2 * var(--gutter)); }
   .site-nav::-webkit-scrollbar { display: none; }
-  .nav-links { padding: 10px 0 12px; gap: 20px; white-space: nowrap; }
+  .nav-links { padding: 10px 0 12px; gap: clamp(12px, 4vw, 20px); white-space: nowrap; }
   .header-gh { display: none; }
   .tester-toolbar { grid-template-columns: 1fr; padding: 16px; }
   .tester-sub, .tester-area { padding-left: 16px; padding-right: 16px; }
@@ -439,19 +441,23 @@ footer.site-footer { border-top: 1px solid var(--line); padding: 36px 0 56px; fo
 
         <div class="tester-sub">
           <label class="toggle" id="italicWrap"><input type="checkbox" id="italicToggle"> Italic</label>
-          <span class="label" id="featLabel">OpenType</span>
-          <div class="chips" role="group" aria-labelledby="featLabel">
-            <button class="chip" type="button" data-feat="smcp" aria-pressed="false">Small caps</button>
-            <button class="chip" type="button" data-feat="onum" aria-pressed="false">Old-style figures</button>
-            <button class="chip" type="button" data-feat="frac" aria-pressed="false">Fractions</button>
+          <div class="chip-group">
+            <span class="label" id="featLabel">OpenType</span>
+            <div class="chips" role="group" aria-labelledby="featLabel">
+              <button class="chip" type="button" data-feat="smcp" aria-pressed="false">Small caps</button>
+              <button class="chip" type="button" data-feat="onum" aria-pressed="false">Old-style figures</button>
+              <button class="chip" type="button" data-feat="frac" aria-pressed="false">Fractions</button>
+            </div>
           </div>
           <span class="spacer"></span>
-          <span class="label" id="presetLabel">Presets</span>
-          <div class="chips" role="group" aria-labelledby="presetLabel">
-            <button class="chip" type="button" data-preset="headline">Headline</button>
-            <button class="chip" type="button" data-preset="paragraph">Paragraph</button>
-            <button class="chip" type="button" data-preset="figures">Figures</button>
-            <button class="chip" type="button" data-preset="alphabet">Alphabet</button>
+          <div class="chip-group">
+            <span class="label" id="presetLabel">Presets</span>
+            <div class="chips" role="group" aria-labelledby="presetLabel">
+              <button class="chip" type="button" data-preset="headline">Headline</button>
+              <button class="chip" type="button" data-preset="paragraph">Paragraph</button>
+              <button class="chip" type="button" data-preset="figures">Figures</button>
+              <button class="chip" type="button" data-preset="alphabet">Alphabet</button>
+            </div>
           </div>
         </div>
 
