@@ -72,7 +72,7 @@ Synthesize the three most successful sans-serifs of the last century: **Helvetic
 |---|---|---|---|---|---|
 | Roboto foundation (uncondensed) | 164u | 163u | symmetric | 152u | 152u |
 | Sky v0.3.0 | 164u | **148u** | lower bowl squarer (0.15 vs −0.03…0.11), upper-left ≠ upper-right handles | **154u** | 139u |
-| Sky v0.5 | 164u | 163u | symmetric | 139u | 139u |
+| Sky v0.4.0 | 164u | 163u | symmetric | 139u | 139u |
 
 A bottom stroke ~10% lighter than the top, and a lower bowl drawn tighter than the upper, are both the opposite of standard optical practice: round letters should sit at least as heavy at the baseline as at the top. All nine styles showed the same pattern (Bold O 248/224, Black 275/248; o top-heavy by 8–17u in every style).
 
@@ -106,11 +106,11 @@ Vertical stress throughout. Overshoot locks verified: O −20 / +1476, o −20 /
 - Ø/ø/Œ/œ and the C, G, Q, D cap rounds are separate outlines. They are now geometrically repaired (§3b) but still carry Roboto's rounder curve, not the approved tension. They should inherit it when their turn comes.
 - c, e, s are still top-heavy (Regular c/e/s top ≈ 154 / bottom ≈ 139). That is lowercase-zone work, queued as c and s in the roadmap.
 
-## 3b. Family repair — undoing the v0.2 x-height scaling where it never belonged (v0.5)
+## 3b. Family repair — undoing the v0.2 x-height scaling where it never belonged (v0.4)
 
 **What happened in v0.2 (reconstructed by measurement, all 9 styles):** to lower the x-height to 990, *every* point with 0 < y ≤ ~1104 was multiplied by k = 0.8983 (= 990/1102; italics 0.8967 / 0.8967 / 0.8952, and the zone top is ~1106–1110 there). Points above that line and below the baseline were left alone, and x was never touched. That is right for lowercase, but it also hit every capital, figure and cap-height symbol, squashing their lower ~75% while their tops stayed put:
 
-| Regular, horizontal-stroke edges on a vertical cut | v0.3.0 | v0.5 | Roboto v2.138 target |
+| Regular, horizontal-stroke edges on a vertical cut | v0.3.0 | v0.4.0 | Roboto v2.138 target |
 |---|---|---|---|
 | H crossbar | 605–746 (141u) | 673–830 (157u) | 673–830 |
 | E bottom / middle bar | 0–141 / 605–746 | 0–157 / 673–830 | 0–157 / 673–830 |
@@ -152,18 +152,26 @@ The counts differ slightly by weight because detection is by measurement: e.g. t
 
 **Outline QA (every changed glyph):** no contour-direction changes, no new overlaps, no new kinks in the main set. The worst remaining new kinks are 2–4.5° rounding bends in rare symbols (§, ⸾, uniFFFD); 3 italic modifier letters (U+1D61, U+1D4E, U+A71D) gained a 1.7–1.9u off-extremum control point.
 
-## 3c. Italic angle (v0.5)
+## 3c. Italic angle (v0.4)
 
 Sky's italics declared Roboto's nominal angle: `post.italicAngle` −12° with an hhea caret of 100/21 (11.9°). But that is not the slant of the outlines. Roboto's own stems lean 9.86°, and the v0.3 −12% condensing reduced that to atan(0.88 · tan 9.86°) = 8.68°. **Measured on the repaired outlines** (median over the straight stems of I l H T E L F h d b): Italic 8.659°, Medium Italic 8.649°, Bold Italic 8.659°.
 
 - **Now:** `post.italicAngle` = **−8.66°** in all three italics. hhea caret = 2048 / 312 (= 8.66°). fontbakery `caret_slope` goes from WARN to PASS.
 - An earlier note estimated "≈10.6°" by assuming Roboto's true slant was 12°. That was wrong; the measured value above replaces it.
 
-## 3d. Side-bearing metadata (v0.5)
+## 3d. Side-bearing metadata (v0.4)
 
 In v0.3, ~1,300–1,440 glyphs per font (almost all accented composites, plus A V W X Y v w x, whose corner-softening moved xMin) had an hmtx left side bearing that disagreed with the outline's xMin, typically by 2–18u. The outlines already render in the right place in Chrome and unhinted FreeType (checked). This is a metadata fix: lsb now equals xMin for every glyph. It matters for anything that positions from hmtx / phantom points (TrueType hinting, some PDF and layout tools). Advance widths unchanged. Script: `scripts/fix_metrics.py`.
 
-**Found, not changed (needs a decision):** composite glyphs' **advance widths** don't match their base letters. In v0.3, base letters were re-spaced but composites only kept Roboto × 0.88, so É is 35u wider than E and á is 23u wider than a in Regular (1,395 of 1,421 composites differ from their base; in Roboto 841 matched exactly). Accented letters therefore set looser than plain ones.
+**Accent spacing (v0.4, fixed):** composites' advance widths didn't match their base letters. In v0.3 the base letters were re-spaced but composites only kept Roboto × 0.88, so É was 35u wider than E and á 23u wider than a in Regular. Now every letter+marks composite takes its base's advance (plus Roboto's own deliberate extra, condensed, where Roboto widens: ď ľ ť, Greek tonos). Each mark sits where Roboto puts it relative to the base (median error 0.3u). Script: `scripts/glyphs/fix_composite_spacing.py`.
+
+## 3e. Round capitals inherit the O curve (v0.4)
+
+C, G, D and Œ take the same tension operator as O, at the style's O value. Q and Ø are rebuilt on the new O with their own tail / slash. Measured squareness (Regular, outer contour, per quadrant UR/UL/LL/LR): C 0.23/0.10/0.10/0.23 → 0.31/0.21/0.21/0.30; G 0.26/0.12/0.07/0.44 → 0.32/0.23/0.18/0.47; Œ bowl 0.32 → 0.40; the D bowl corners 0.01 → 0.12; Q bowl 0.16 → 0.26. Straight parts, terminals and stroke weights are unchanged.
+
+## 3f. Low punctuation (v0.4)
+
+Period, comma, „ and ‚ were ~10% flat from the v0.2 scaling (Regular period 189u vs Roboto's 210u). They are restored to Roboto's shape on the baseline. ·, • and the dots of ¡ ¿ are restored about their own centres. The colon/semicolon upper dot offset had never been scaled with the x-height and sat 82u above it; it now gets the same y × 0.898 (+ italic slant) as the outlines and tops out at the x-height. Script: `scripts/glyphs/restore_low_punct.py`.
 
 ## 4. Optical Sizing & Weight Matrix
 

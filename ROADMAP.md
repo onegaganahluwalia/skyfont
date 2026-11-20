@@ -55,6 +55,18 @@ All nine fonts condensed 12% horizontally. The family now sits at a proper grote
 - Type specimen PDF published (sky-specimen-v03.pdf) — 8 pages, all fonts embedded, available in repo root
 - **Status: 0% hand-drawn.** Proportion and metric engineering complete.
 
+## v0.4 — Repair release ✅ Complete (2026-11-20)
+
+Measured repairs to the foundation, plus the approved O curve. No new drawing.
+
+**Completed:**
+- Caps, figures and cap-height symbols un-squashed from the v0.2 x-height scaling (516–533 glyphs per style); corner-softening re-applied
+- Squarer O/o (spec change approved by Gagan, 18 Nov 2026), inherited by C, G, Q, D, Ø, Œ
+- Accented letters spaced exactly like their base letters (~1,065 composites per style)
+- Low punctuation un-flattened; colon/semicolon upper dot back at the x-height
+- Italic angle set to the measured 8.66°; side-bearing metadata, xAvgCharWidth and version fields fixed
+- **Status: 0% hand-drawn.** Foundation repaired.
+
 ## v0.5 — Core DNA letters
 
 **Method note (added after real work began):** "original" here means *verified, deliberate geometric modification* of the Roboto-derived foundation — real point-level engineering with a documented typographic reason for each change — not drawing from a blank canvas. Some letters turn out to already meet spec (no change needed, confirmed by measurement). Some get real, describable modifications (e.g., corner-softening on straight-stemmed letters). Some require careful curve-level work that takes longer to get right. Every change ships only after visual verification; nothing gets modified just to show progress.

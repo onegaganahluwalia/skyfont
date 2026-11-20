@@ -4,6 +4,10 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 
 ## [Unreleased]
 
+## [0.4.0] — 2026-11-20 — Repair release
+
+v0.4 repairs the foundation: the v0.2 squash in caps and figures, accented-letter spacing, low punctuation, and metrics. It also brings in the approved squarer curve for O/o and the round capitals. Still 0% hand-drawn in the roadmap's sense. These are measured repairs and an approved spec change, not new drawings.
+
 ### Website
 - **Fixed: the site was rendering stale, pre-v0.3 fonts.** `website/index.html` embedded six base64 WOFF2 fonts that predated the −12% condensing (e.g. Regular H advance 1421u vs 1250u in v0.3) and still carried the old `sxHeight` of 1082. Italic styles were not embedded at all, so italics were browser-synthesised. The page now loads WOFF2 files generated from the shipped `fonts/*.ttf` (outlines and advance widths verified identical), with TTF fallback.
 - All 9 styles wired via `@font-face` with correct weight/style mapping (100/300/400/500/700/900 upright; 400/500/700 italic), `font-display: swap`, and a preload for Regular. `index.html` drops from 1.1 MB to ~56 KB.
@@ -28,10 +32,24 @@ All notable changes to Sky are documented here. Version numbers reflect actual d
 - **Italic angle:** `post.italicAngle` −12° → **−8.66°**, the slant measured on the stems, with the hhea caret 100/21 → 2048/312 to match, in Italic, Medium Italic and Bold Italic. Roboto's true stem slant is 9.86°; the −12% condensing makes it 8.66°. fontbakery `caret_slope` goes from WARN to PASS.
 - **Left side bearings:** hmtx lsb now equals the outline's xMin for every glyph. In v0.3, 1,302–1,436 glyphs per font disagreed by 2–18u (almost all accented composites). Rendering in Chrome / unhinted FreeType is unchanged; this fixes the metadata that hinting and hmtx-based tools use. Added `scripts/fix_metrics.py`.
 
-### Notes
-- Website font files (`website/fonts/`) regenerated from these fonts with `scripts/make-webfonts.py`.
-- Found, not changed (decisions open): accented composites have advance widths that don't match their base letters (typically 6–36u wider in Regular) (spacing inconsistency from v0.3); c, e, s are still top-heavy (queued); Ø/Œ and C/G/Q/D don't yet carry the O/o tension; period, comma and other x-height-relative punctuation keep the v0.2 scaling.
+### Changed — round capitals take the approved O curve
+- **C, G, D, Œ** get the same tension operator as O, at each style's O value (uprights 0.12, italics 0.148–0.149). On-curve points, stroke weights, terminals, straight parts and corner chamfers don't move. Regular squareness rises by about 0.1 in each round quadrant, e.g. C 0.10 → 0.21 and Œ 0.32 → 0.40, matching O's 0.10 → 0.21.
+- **Q and Ø** are rebuilt on the new O: Q keeps its own tail, and Ø's slash is re-formed from its two straight edges so it runs unbroken through the squarer counter. Contours are cleaned (TrueType direction, no slivers or overlaps). Added `scripts/glyphs/round_caps_tension.py`.
 
+### Fixed — accented letters spaced like their base letters
+- In v0.3 the base letters were re-spaced but the accented composites were only condensed, so É was 35u wider than E (Regular) and its accent sat ~18u off-centre. Now **1,064–1,068 composites per style** take their base letter's advance exactly (887–940 per style), or the base plus Roboto's own deliberate extra (ď, ľ, ť, Greek tonos), condensed. Each accent sits where Roboto puts it relative to the base: the median offset error went from 5–22u to 0.3–0.4u, with a maximum of 5.4u. Ligatures, digraphs, fractions and non-letters are left alone and listed in the build report. Added `scripts/glyphs/fix_composite_spacing.py`.
+
+### Fixed — low punctuation un-flattened
+- Period, comma, „ and ‚ get Roboto's round shapes back on the baseline. Regular period goes from 189u to 210u tall; that was 10% flat. The floating dots (·, •, and the dots of ¡ ¿) are restored about their own centres. Colon, semicolon and ellipsis inherit the round dots. The colon's and semicolon's upper dot now sits at the x-height (Regular top 1072 → 1003); it had been 82u above it. Added `scripts/glyphs/restore_low_punct.py`.
+
+### Fixed — release metadata
+- Version 0.400 in `head.fontRevision` and name ID 5. The files still said Roboto's 2.138. Name ID 3 is now `Sky:<PostScript name>:0.400`.
+- `OS/2.xAvgCharWidth` recalculated (Regular 1168 → 991; it predated the v0.3 condensing). fontbakery `xavgcharwidth` goes from WARN to PASS in all 9 styles. Added `scripts/set_release.py`.
+
+### Notes
+- `scripts/build-v05-repair.py` rebuilds all of this from the v0.3.0 fonts (060051b) and Roboto v2.138, in order. Website fonts are regenerated with `scripts/make-webfonts.py`.
+- fontbakery check-universal: no new FAILs in any style. WARN → PASS: `xavgcharwidth` ×9 and `caret_slope` ×3.
+- Still open: c, e, s are top-heavy (queued in the v0.5 letter order); titlecase digraphs (Dž …) keep the v0.2 squash on their capital half. The specimen PDF still shows v0.3.
 ---
 
 ## [0.3.0] — Horizontal condensing
