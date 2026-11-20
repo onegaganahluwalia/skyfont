@@ -1,0 +1,4 @@
+__pycache__/
+*.pyc
+# scratch QA scripts
+/qa_*.py
